@@ -2,7 +2,7 @@
 
 ## Tool: **Kaboom**
 
-## Project: **Tower battle game**
+## Project: **Tower PVE battle game**
 
 ---
 
