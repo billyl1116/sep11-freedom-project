@@ -38,6 +38,68 @@ onKeyPress("space", () => {
     player.jump()
 })
 ```
+# 10/28
+First I watch this [video](https://www.youtube.com/watch?v=n-q0pKGhxyw) to get an basic idea about the basic of sprite.
+
+## Creating a Sprite
+To create a sprite use the add function along with the sprite method. Here is an example:
+
+```js
+kaboom(); // Initialize Kaboom
+
+const player = add([
+    sprite("player"), // load a sprite named "player"
+    pos(100, 100),    // set position
+    area(),           // collision area
+    body(),           // physics
+]);
+```
+
+Before using a sprite, you need to load it. This is how it's done at the beginning:
+
+```js
+
+loadSprite("player", "path/to/player.png");
+
+```
+## Animating Sprites
+You can animate a sprite by creating animations:
+
+```js
+loadSprite("player", "path/to/player.png");
+loadSprite("player_run", "path/to/player_run.png");
+
+anim("run", {
+    frames: [
+        "player_run1",
+        "player_run2",
+    ],
+    speed: 10,
+    loop: true,
+});
+
+// Set the animation on the sprite
+player.play("run");
+Moving Sprites
+
+```
+
+To move a sprite, you can use the move() method or respond to input:
+
+```js
+
+player.move(100, 0); // Move right
+
+// Or with input
+keyPress("right", () => {
+    player.move(200, 0);
+});
+
+```
+
+### Summary
+Create sprites with add and sprite. Load sprites using loadSprite. Animate with play. And I'm going to try to add collision detection next.
+
 
 
 
@@ -52,3 +114,5 @@ onKeyPress("space", () => {
 * Questions you still have
 * What you're going to try next
 -->
+
+
