@@ -151,7 +151,7 @@ const enemy = add([
     area(),
 ]);
 
-player.collides("enemy", () => {
+player.onCollides("enemy", () => {
     console.log("Ouch!");
 });
 
