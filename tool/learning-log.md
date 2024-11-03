@@ -116,3 +116,50 @@ Create sprites with add and sprite. Load sprites using loadSprite. Animate with 
 -->
 
 
+## 11/3/24
+
+
+Collision Detection 
+
+To handle collisions, you can use the collides method: 
+
+```js
+
+player.collides("enemy", () => {
+    // Handle collision with an enemy
+    console.log("Ouch!");
+});
+
+// Here's a simple example
+
+
+kaboom();
+
+loadSprite("player");
+loadSprite("enemy");
+
+const player = add([
+    sprite("player"),
+    pos(100, 100),
+    area(),
+    body(),
+]);
+
+const enemy = add([
+    sprite("enemy"),
+    pos(200, 100),
+    area(),
+]);
+
+player.collides("enemy", () => {
+    console.log("Ouch!");
+});
+
+keyPress("right", () => {
+    player.move(200, 0);
+});
+
+
+```
+
+
