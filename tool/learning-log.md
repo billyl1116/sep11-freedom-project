@@ -91,7 +91,7 @@ To move a sprite, you can use the move() method or respond to input:
 player.move(100, 0); // Move right
 
 // Or with input
-keyPress("right", () => {
+onKeyPress("right", () => {
     player.move(200, 0);
 });
 
