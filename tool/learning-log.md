@@ -176,4 +176,26 @@ add([
 
 ```
 
+## move 
 
+```js
+
+SPEED = // the speed you want
+
+onKeyDown("left", () => {
+	player.move(-SPEED, 0) // moving left you add a "-" sign
+})
+
+onKeyDown("right", () => {
+	player.move(SPEED, 0)
+})
+
+onKeyDown("up", () => {    
+	player.move(0, -SPEED)     // moving up or down place the 0 on the x-axis
+})
+
+onKeyDown("down", () => {
+	player.move(0, SPEED)
+})
+
+```
