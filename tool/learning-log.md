@@ -199,3 +199,10 @@ onKeyDown("down", () => {
 })
 
 ```
+
+## summery 
+
+I thinker with all my code and created a working sprite that's movable and have collision and when It hit the image it console.log message.
+
+
+
