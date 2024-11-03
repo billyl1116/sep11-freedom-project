@@ -162,4 +162,18 @@ keyPress("right", () => {
 
 ```
 
+## Platform
+```js
+add([
+    rect(width(), 48), // renders a rectangle. It accepts 2 arguments, the width and height, which we give it the game width (returned by width()) and height of 48 pixels
+
+    pos(0, height() - 48), // pos() position. We give it a x: 0 and y: height() - 48 so it sits right on the bottom of the screen
+    outline(4), // renders an outline of 4 pixels
+    area(), //  adds a collider to it
+    body({ isStatic: true }), // the object won't move, and all non static objects won't move past it
+    color(127, 200, 255),
+])
+
+```
+
 
