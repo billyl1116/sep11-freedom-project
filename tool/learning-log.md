@@ -100,23 +100,7 @@ onKeyPress("right", () => {
 ### Summary
 Create sprites with add and sprite. Load sprites using loadSprite. Animate with play. And I'm going to try to add collision detection next.
 
-
-
-
-
-
-
-
-<!-- 
-* Links you used today (websites, videos, etc)
-* Things you tried, progress you made, etc
-* Challenges, a-ha moments, etc
-* Questions you still have
-* What you're going to try next
--->
-
-
-## 11/3/24
+## 11/11/24
 
 
 Collision Detection 
@@ -199,3 +183,26 @@ onKeyDown("down", () => {
 })
 
 ```
+
+## summery 
+
+I thinker with all my code and created a working sprite that's movable and have collision and when It hit the image it console.log message. In [kaboom.html](../kaboom.html)
+
+
+
+
+
+
+
+
+
+
+<!-- 
+* Links you used today (websites, videos, etc)
+* Things you tried, progress you made, etc
+* Challenges, a-ha moments, etc
+* Questions you still have
+* What you're going to try next
+-->
+
+
