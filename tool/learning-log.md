@@ -191,9 +191,115 @@ I thinker with all my code and created a working sprite that's movable and have 
 
 
 
+## 11/24/24
 
+I made a working parkour game that shows score and has an ending screen. 
 
+```js
+function jump() {
+		if (player.isGrounded()) {
+			player.jump(JUMP_FORCE) // make it so player can't continually jumping
+		}
+	}
 
+	// jump when player press space
+	onKeyPress("space", jump)
+	onClick(jump)
+```
+this make the basis for the player to jump so they can escape the object
+
+---
+
+and to make the object you do this
+
+```js
+function spawnTree() {
+
+		// add tree obj
+		add([
+			rect(48, rand(32, 96)),
+			area(),
+			outline(4),
+			pos(width(), height() - FLOOR_HEIGHT),
+			anchor("botleft"),
+			color(238, 143, 203),
+			move(LEFT, SPEED),
+			offscreen({ destroy: true }),
+			"tree",
+		])
+
+		// wait a random amount of time to spawn next tree
+		wait(rand(0.5, 1.5), spawnTree)
+
+	// start spawning trees
+	spawnTree()
+
+	player.onCollide("tree", () => {
+		// go to "lose" scene and pass the score
+		go("lose", score)
+		burp()
+		addKaboom(player.pos)
+	})
+
+```
+this make it so the object will move from right to left and spawn object at certain place and when the player collide with the object they will lose.
+
+---
+
+and to add score you depend on the amount of time they survive
+```js
+	let score = 0
+
+	const scoreLabel = add([
+		text(score),
+		pos(24, 24),
+	])
+
+	// increment score every frame
+	onUpdate(() => {
+		score++
+		scoreLabel.text = score
+	})
+
+})
+```
+This will increase the score by the time they live.
+
+---
+
+```js
+
+scene("lose", (score) => {
+
+	add([
+		sprite("bean"),
+		pos(width() / 2, height() / 2 - 64),
+		scale(2),
+		anchor("center"),
+	])
+
+	// display score
+	add([
+		text(score),
+		pos(width() / 2, height() / 2 + 64),
+		scale(2),
+		anchor("center"),
+	])
+
+	// go back to game with space is pressed
+	onKeyPress("space", () => go("game"))
+	onClick(() => go("game"))
+
+})
+
+go("game")
+```
+
+This is how you make the ending screen and what you can do to restart and loop the game so players don't have to refresh.
+
+## summary
+
+I learn how to make a parkour game and this is how i made it in 
 
 
 
