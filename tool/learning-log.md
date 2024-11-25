@@ -299,7 +299,7 @@ This is how you make the ending screen and what you can do to restart and loop t
 
 ## summary
 
-I learn how to make a parkour game and this is how i made it in 
+I learn how to make a parkour game and this is how i made it in [kaboom2.0.html](../kaboom2.0.html)
 
 
 
