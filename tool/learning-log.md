@@ -311,4 +311,9 @@ I learn how to make a parkour game and this is how i made it in [kaboom2.0.html]
 * What you're going to try next
 -->
 
+## 12/8/24
+
+I made a working npc that will "move", "still", "and attack"
+
+first
 
