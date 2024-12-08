@@ -313,7 +313,34 @@ I learn how to make a parkour game and this is how i made it in [kaboom2.0.html]
 
 ## 12/8/24
 
-I made a working npc that will "move", "still", "and attack"
+I made a working npc that will "move", "still", and "attack"
 
-first
+first you set the value of the speed
+
+```js 
+const SPEED = 320
+const ENEMY_SPEED = 160
+const BULLET_SPEED = 800
+```
+
+after having the value of the speed you can create a npc
+
+```js 
+const enemy = add([
+	sprite("enemy"),
+	pos(width() - 80, height() - 80),
+	anchor("center"),
+	// the enemy cycle between 3 states, and start from "idle" state
+	state("move", [ "idle", "attack", "move" ]),
+])
+```
+this create the npc with three different state, and with that we can creat the first state `idle` like this
+
+```js
+enemy.onStateEnter("idle", async () => {
+	await wait(0.5)
+	enemy.enterState("attack")
+})
+```
+this wil make the npc with for 0.5 second or you can change the time to whatevery you want.
 
