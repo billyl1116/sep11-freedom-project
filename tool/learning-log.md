@@ -344,3 +344,49 @@ enemy.onStateEnter("idle", async () => {
 ```
 this wil make the npc with for 0.5 second or you can change the time to whatevery you want.
 
+```js 
+enemy.onStateEnter("attack", async () => {
+
+	// Don't do anything if player doesn't exist anymore
+	if (player.exists()) {
+
+		const dir = player.pos.sub(enemy.pos).unit()
+
+		add([
+			pos(enemy.pos),
+			sprite("bullet"),
+			move(dir, BULLET_SPEED), //here the speed you made in the begining is used
+		
+			// rect(12, 12),
+			area(),
+			offscreen({ destroy: true }),
+			anchor("center"),
+			// color(BLUE),
+			"bullet",
+		])
+
+	}
+
+	await wait(1)
+	enemy.enterState("move")
+
+})
+```
+
+this create the bullet npc and when player is still alive it will attack the player using the bullet and when the player is still alive it will wait `1` second and than move toward player.
+
+```js
+enemy.onStateEnter("move", async () => {
+	await wait(2)
+	enemy.enterState("idle")
+})
+
+// Here we move towards the player every frame if the current state is "move"
+enemy.onStateUpdate("move", () => {
+	if (!player.exists()) return
+	const dir = player.pos.sub(enemy.pos).unit()
+	enemy.move(dir.scale(ENEMY_SPEED))
+})
+```
+
+when enemy move it will entry idle state after awaiting
