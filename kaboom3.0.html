@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <style>
+            /* CSS */
+
+        </style>
+
+        <title>Title</title>
+    </head>
+    <body>
+        <!-- HTML -->
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://unpkg.com/kaboom@3000.0.1/dist/kaboom.js"></script>
+
+        <!-- <script src="script.js"></script> -->
+        <script type="module">
+
+            // import kaboom.js
+            import kaboom from "https://unpkg.com/kaboom@3000.0.1/dist/kaboom.mjs";
+
+            // initialize kaboom context
+  // Use state() component to handle basic AI
+
+// Start kaboom
+kaboom()
+
+// Load assets
+loadSprite("player", "../img/newapple.png")
+loadSprite("enemy", "../img/stand.png")
+loadSprite("bullet", "../img/steelball.png")
+
+const SPEED = 320
+const ENEMY_SPEED = 160
+const BULLET_SPEED = 800
+
+// Add player game object
+const player = add([
+	sprite("player"),
+	pos(80, 80),
+	area(),
+	anchor("center"),
+])
+
+const enemy = add([
+	sprite("enemy"),
+	pos(width() - 80, height() - 80),
+	anchor("center"),
+	// This enemy cycle between 3 states, and start from "idle" state
+	state("move", [ "idle", "attack", "move" ]),
+])
+
+// Run the callback once every time we enter "idle" state.
+// Here we stay "idle" for 0.5 second, then enter "attack" state.
+enemy.onStateEnter("idle", async () => {
+	await wait(0.5)
+	enemy.enterState("attack")
+})
+
+// When we enter "attack" state, we fire a bullet, and enter "move" state after 1 sec
+enemy.onStateEnter("attack", async () => {
+
+	// Don't do anything if player doesn't exist anymore
+	if (player.exists()) {
+
+		const dir = player.pos.sub(enemy.pos).unit()
+
+		add([
+			pos(enemy.pos),
+			sprite("bullet"),
+			move(dir, BULLET_SPEED),
+			// rect(12, 12),
+			area(),
+			offscreen({ destroy: true }),
+			anchor("center"),
+			// color(BLUE),
+			"bullet",
+		])
+
+	}
+
+	await wait(1)
+	enemy.enterState("move")
+
+})
+
+enemy.onStateEnter("move", async () => {
+	await wait(2)
+	enemy.enterState("idle")
+})
+
+// Like .onUpdate() which runs every frame, but only runs when the current state is "move"
+// Here we move towards the player every frame if the current state is "move"
+enemy.onStateUpdate("move", () => {
+	if (!player.exists()) return
+	const dir = player.pos.sub(enemy.pos).unit()
+	enemy.move(dir.scale(ENEMY_SPEED))
+})
+
+// Taking a bullet makes us disappear
+player.onCollide("bullet", (bullet) => {
+	destroy(bullet)
+	destroy(player)
+	addKaboom(bullet.pos)
+})
+
+// Register input handlers & movement
+onKeyDown("left", () => {
+	player.move(-SPEED, 0)
+})
+
+onKeyDown("right", () => {
+	player.move(SPEED, 0)
+})
+
+onKeyDown("up", () => {
+	player.move(0, -SPEED)
+})
+
+onKeyDown("down", () => {
+	player.move(0, SPEED)
+})
+
+
+</script>
+
