@@ -342,7 +342,7 @@ enemy.onStateEnter("idle", async () => {
 	enemy.enterState("attack")
 })
 ```
-this wil make the npc with for 0.5 second or you can change the time to whatevery you want.
+this wil make the npc enter `idle` with for 0.5 second or you can change the time to whatevery you want, and it will attack.
 
 ```js 
 enemy.onStateEnter("attack", async () => {
@@ -389,4 +389,4 @@ enemy.onStateUpdate("move", () => {
 })
 ```
 
-when enemy move it will entry idle state after awaiting
+when enemy move enemy will move to player's postition if they are still alive and it will entry `idle` state after awaiting.
