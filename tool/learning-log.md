@@ -242,7 +242,7 @@ onKeyDown("down", () => {
 ```
 
 
-## summery
+## summary
 
 
 I thinker with all my code and created a working sprite that's movable and have collision and when It hit the image it console.log message. In [kaboom.html](../kaboom.html)
@@ -516,6 +516,6 @@ player.onCollide("bullet", (bullet) => {
 
 this will make a working bullet
 
-
-and will
+## summary
+and with all that I create a game in [kaboom3.0.html](../kaboom3.0.html)
 
