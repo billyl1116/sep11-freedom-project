@@ -1,25 +1,34 @@
 # Plan
 
-## Tool:
-## Product:
+## Tool: Kaboom.js (for building the game and making it controllable and playable.
+## Product: A game where you can summon unit to fight against enemy
 
 ---
 
-## Timeline
 
-#### MVP
+
+### MVP and Timeline
 
 - creating a working map
 - getting all the sprite for player enemy and others
-due after the winter break
+- the money system for summoning unit
+
+**due after the winter break going to be finish it during winter break**
+- health bar so unit can die
+- a wining condition (destroying the enemy base)
+
+**do before the spring break**
 
 - get a working npc that will attack you and have a health bar
-- working player that can move and attack the npc
+- working player side npc that can move and attack the enemy npc
 
-do before the spring break
-#### Beyond MVP
+**do after the spring break**
 
-- [add more levels ] Task
+### Beyond MVP
+
+- [add more levels ]
+- add animation to the attack and being damaged
+- add more enemy and unit
   - [add a win and lose screen] Subtask
   - add music 
 
