@@ -1,7 +1,7 @@
 # Plan
 
-## Tool: 
-## Product: 
+## Tool:
+## Product:
 
 ---
 
@@ -9,13 +9,19 @@
 
 #### MVP
 
-- [ ] Task (deadline: X)
-  - [ ] Subtask (deadline: X)
+- creating a working map
+- getting all the sprite for player enemy and others
+due after the winter break
 
+- get a working npc that will attack you and have a health bar
+- working player that can move and attack the npc
+
+do before the spring break
 #### Beyond MVP
 
-- [ ] Task
-  - [ ] Subtask
+- [add more levels ] Task
+  - [add a win and lose screen] Subtask
+  - add music 
 
 
 <!-- EXAMPLE
