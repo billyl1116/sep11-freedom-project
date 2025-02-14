@@ -620,4 +620,36 @@ function addExplode(p, n, rad, size) {
 
 ## summory
 
-this is a project that structure a game using scenes, sprites, and interactions while also managing game logic for player input, movement, and enemy behavior.
+this is a project that structure a game using scenes, sprites, and interactions while also managing game logic for player input, movement, and enemy behavior. 
+[kaboom4.0.html](../kaboom4.0.html)
+
+
+## 1/12/2025
+
+## content
+
+In this time I was tired so I learn a simple thing that will have sprite popping up every few second and disappearing
+
+this is the code
+
+```js
+
+// Execute something after every 0.5 seconds.
+loop(0.5, () => {
+
+	const bean = add([
+		sprite("apple"),
+		pos(rand(vec2(0), vec2(width(), height()))),  //spawn the sprite in a random place
+	])
+
+	// Execute something after 3 seconds.
+	wait(3, () => {
+		destroy(bean)
+	})
+
+})
+
+```
+
+with this I made a simple program in [kaboom5.0.html](../kaboom5.0.html)
+
