@@ -657,4 +657,9 @@ with this I made a simple program in [kaboom5.0.html](../kaboom5.0.html)
 
 ## Content
 
-This time I made a plan for my future plan on completing my project, in [Plan](../prep/plan.html)
+This time I made a plan for my future plan on completing my project, in [Plan](../prep/plan.md), But I was sick over the break and couldn't do much, but right now my progress is I made a working map and player and enemy, but some problem I had was the bullet can't hit the enemy and the player can't jump. 
+
+## Plan
+
+I'm planning to make my player able to jump and bullet work and make the player base.
+
