@@ -661,5 +661,5 @@ This time I made a plan for my future plan on completing my project, in [Plan](.
 
 ## Plan
 
-I'm planning to make my player able to jump and bullet work and make the player base.
+I'm planning to make my player able to jump and bullet work and make the player base. In (kaboomfinal.html)[../kaboomfinal.html]
 
