@@ -1,63 +1,138 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <!--<link href="style.css" rel="stylesheet" type="text/css" />-->
-        <style>
-            /* CSS */
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Game Title</title>
 
-        </style>
+    <style>
+        /* You can add custom styles here */
+    </style>
+</head>
+<body>
+    <script type="module">
+        import kaboom from "https://unpkg.com/kaboom@3000.0.1/dist/kaboom.mjs";
 
-        <title></title>
-    </head>
-    <body>
-        <!-- HTML -->
+        kaboom({
+            background: [141, 183, 255],
+        });
+
+        loadSprite("bullet", "../img/steelball.png");
+        loadSprite("stand", "../img/stand.png");
+        loadSprite("background", "img/apple.png");
+        loadSprite("grass", "img/grassblock.png");
+
+        const BULLET_SPEED = 800;
+        const BOSS_HEALTH = 1000;
+        const PLAYER_SPEED = 480;
+        const JUMP_FORCE = 480;  // The force that will make the player jump
+
+        const background = add([
+            sprite("background"),
+            pos(0, 0),
+            scale(width() / 1000, height() / 1000),
+        ]);
+
+        add([
+            rect(width(), 48),
+            pos(0, height() - 48),
+            outline(4),
+            area(),
+            body({ isStatic: true }),
+            color(127, 200, 255),
+        ]);
+
+        loadSprite("enemytower", "img/tower.png");
+
+        // Function to spawn a bullet
+        function spawnBullet(p) {
+            const bullet = add([
+                sprite("bullet"),
+                area(),
+                pos(p),
+                anchor("center"),
+                outline(4),
+                move(LEFT, BULLET_SPEED),
+                offscreen({ destroy: true }),
+                "bullet", // Tag for easier identification
+            ]);
+        }
+
+        const enemytower = add([
+            sprite("enemytower"),
+            pos(100, 200),
+            area(),
+            health(BOSS_HEALTH),
+            body(),
+            body({ isStatic: true }),
+            "enemy", // Tag to identify as enemy
+        ]);
+
+        const healthbar = add([
+            rect(width(), 24),
+            pos(0, 0),
+            color(107, 201, 108),
+            fixed(),
+            {
+                max: BOSS_HEALTH,
+                set(hp) {
+                    this.width = width() * hp / this.max;
+                    this.flash = true;
+                },
+            },
+        ]);
+
+        healthbar.onUpdate(() => {
+            if (healthbar.flash) {
+                healthbar.color = rgb(255, 255, 255);
+                healthbar.flash = false;
+            } else {
+                healthbar.color = rgb(127, 255, 127);
+            }
+        });
+
+        enemytower.onHurt(() => {
+            healthbar.set(enemytower.hp());
+        });
+
+        const player = add([
+            sprite("stand"),
+            area(),
+            pos(width() / 2, height() - 64),
+            anchor("center"),
+            body(), // Enable physics for gravity
+        ]);
+
+        // Player movement: Left/Right
+        onKeyDown("left", () => {
+            player.move(-PLAYER_SPEED, 0);
+            if (player.pos.x < 0) {
+                player.pos.x = width();
+            }
+        });
+
+        onKeyDown("right", () => {
+            player.move(PLAYER_SPEED, 0);
+            if (player.pos.x > width()) {
+                player.pos.x = 0;
+            }
+        });
 
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
-        <!--<script src="script.js"></script>-->
-        <script>
-            // JS
+        onKeyPress("up", () => {
+    player.jump()
+})
+
+        onKeyPress("space", () => {
+            spawnBullet(player.pos.sub(16, 0));
+            spawnBullet(player.pos.add(16, 0));
+        });
+    </script>
 
 
-        </script>
-    </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
-<!DOCTYPE html>
-<html>
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="style.css" rel="stylesheet" type="text/css" />
-        <style>
-            /* CSS */
-
-        </style>
-
-        <title>Title</title>
-    </head>
-    <body>
-        <!-- HTML -->
-
-
-        <script type="module">
-
-            // import kaboom.js
-            import kaboom from "https://unpkg.com/kaboom@3000.0.1/dist/kaboom.mjs";
-
-            // initialize kaboom context
-            kaboom();
-
-
-
-
-
-</script>
-
