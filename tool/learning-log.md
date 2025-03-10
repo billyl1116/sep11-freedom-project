@@ -653,3 +653,8 @@ loop(0.5, () => {
 
 with this I made a simple program in [kaboom5.0.html](../kaboom5.0.html)
 
+## 3/9/2025
+
+## Content
+
+This time I made a plan for my future plan on completing my project, in [Plan](../prep/plan.html)
