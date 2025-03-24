@@ -653,6 +653,17 @@ loop(0.5, () => {
 
 with this I made a simple program in [kaboom5.0.html](../kaboom5.0.html)
 
+## 3/9/2025
+
+## Content
+
+This time I made a plan for my future plan on completing my project, in [Plan](../prep/plan.md), But I was sick over the break and couldn't do much, but right now my progress is I made a working map and player and enemy, but some problem I had was the bullet can't hit the enemy and the player can't jump.
+
+## Plan
+
+I'm planning to make my player able to jump and bullet work and make the player base. In [kaboomfinal.html](../kaboomfinal.html)
+
+
 # 3/23/25
 
 ## content
@@ -670,3 +681,6 @@ onCollide("bullet", "enemy", (bullet, tower) => {
 this will make it so when the bullet hit the tower the `onCollide` will make it so it will touch the hitbox of tower and `.hurt` will deal the amount of damage I  want, and `destroy(bullet)` will make it so the bullet don't go pass the tower, after it hit it will be gone.
 
 Some problem I have was I made `onCollide` with `collides` which didn't work and I need to Remember  what is the actual code next time.
+
+
+
