@@ -229,7 +229,7 @@ onKeyDown("right", () => {
 })
 
 
-onKeyDown("up", () => {    
+onKeyDown("up", () => {
     player.move(0, -SPEED)     // moving up or down place the 0 on the x-axis
 })
 
@@ -460,7 +460,7 @@ enemy.onStateEnter("attack", async () => {
             pos(enemy.pos),
             sprite("bullet"),
             move(dir, BULLET_SPEED), //here the speed you made in the beginning is used
-       
+
             // rect(12, 12),
             area(),
             offscreen({ destroy: true }),
@@ -527,19 +527,19 @@ over the break I made a working boss fighting game where the play have to shoot 
 ### Sprites and Resources
  A list of object names (apple, coin, egg, etc.) is defined, and their sprites are loaded  from the image files. These images are used throughout the game to represent objects and boss.
 
- ```js 
+ ```js
 
  for (const obj of objs) { loadSprite(obj, `../img/${obj}.png`); }
 
  ```
 
- this is the code for using all the image in the file 
+ this is the code for using all the image in the file
 
- ### Scenes: 
- The code shown two scenes, "battle" and "win". 
- 
- The **"battle"** scene handles the main gameplay, like player movement, enemy spawning, shooting , and interactions like collisions and health of player and enemy. 
- 
+ ### Scenes:
+ The code shown two scenes, "battle" and "win".
+
+ The **"battle"** scene handles the main gameplay, like player movement, enemy spawning, shooting , and interactions like collisions and health of player and enemy.
+
 The **"win"** scene is triggered when the player defeats the boss, displaying the time taken and the boss defeated.
 
 
@@ -554,13 +554,13 @@ scene("win", ({ time, boss }) => { ... });
 boss and enemy are randomly spawned with different image, and the player have to avoid or destroy them. The boss has health, movement patterns, and collision detection. The health bar is going lower as the boss takes damage.
 
 
-```js 
+```js
 
 const boss = add([sprite(bossName), area(), pos(width() / 2, 40), health(BOSS_HEALTH), scale(3), "enemy"]);
 
 ```
 
-### Bullet 
+### Bullet
 player can shoot bullets using the space bar. And the bullets are spawned at the player's position, and they move upwards, hitting enemies and dealing damage.
 
 ```js
@@ -620,7 +620,7 @@ function addExplode(p, n, rad, size) {
 
 ## summory
 
-this is a project that structure a game using scenes, sprites, and interactions while also managing game logic for player input, movement, and enemy behavior. 
+this is a project that structure a game using scenes, sprites, and interactions while also managing game logic for player input, movement, and enemy behavior.
 [kaboom4.0.html](../kaboom4.0.html)
 
 
@@ -653,3 +653,20 @@ loop(0.5, () => {
 
 with this I made a simple program in [kaboom5.0.html](../kaboom5.0.html)
 
+# 3/23/25
+
+## content
+
+I fix the problem with the bullet on able to hit the tower from last time by adding `onCollide` to it like this
+
+```js
+onCollide("bullet", "enemy", (bullet, tower) => {
+            // If a bullet hits the tower, decrease tower health
+            tower.hurt(50);  // 50 is the amount of damage
+            destroy(bullet); // Destroy the bullet after it hits
+        });
+```
+
+this will make it so when the bullet hit the tower the `onCollide` will make it so it will touch the hitbox of tower and `.hurt` will deal the amount of damage I  want, and `destroy(bullet)` will make it so the bullet don't go pass the tower, after it hit it will be gone.
+
+Some problem I have was I made `onCollide` with `collides` which didn't work and I need to Remember  what is the actual code next time.

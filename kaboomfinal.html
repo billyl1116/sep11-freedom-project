@@ -19,9 +19,9 @@
         kaboom({
             background: [141, 183, 255],
         });
-
-        loadSprite("bullet", "../img/steelball.png");
         loadSprite("stand", "../img/stand.png");
+        loadSprite("bullet", "../img/steelball.png");
+
         loadSprite("background", "img/apple.png");
         loadSprite("grass", "img/grassblock.png");
 
@@ -130,6 +130,12 @@
             spawnBullet(player.pos.sub(16, 0));
             spawnBullet(player.pos.add(16, 0));
         });
+        onCollide("bullet", "enemy", (bullet, tower) => {
+            // If a bullet hits the tower, decrease tower health
+            tower.hurt(50);  // 50 is the amount of damage
+            destroy(bullet); // Destroy the bullet after it hits
+        });
+
     </script>
 
 
