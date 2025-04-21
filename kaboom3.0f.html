@@ -40,8 +40,8 @@
 const DEMON_HEALTH = 100
 
 // https://0x72.itch.io/dungeontileset-ii
-loadSprite("bullet", "../img/steelball.png")
-loadSpriteAtlas("../img/0x72_DungeonTilesetII_v1.7.png", {
+loadSprite("bullet", "img/steelball.png")
+loadSpriteAtlas("img/0x72_DungeonTilesetII_v1.7.png", {
 	"hero": {
 		"x": 128,
 		"y": 68,
@@ -470,6 +470,7 @@ onCollide("bullet", "player", (b, p) => {
 });
 
 debug.inspect = true
+
 
 </script>
 
