@@ -40,6 +40,7 @@
 const DEMON_HEALTH = 100
 
 // https://0x72.itch.io/dungeontileset-ii
+loadSprite("bullet", "../img/steelball.png")
 loadSpriteAtlas("../img/0x72_DungeonTilesetII_v1.7.png", {
 	"hero": {
 		"x": 128,
@@ -254,7 +255,25 @@ const player = map.spawn([
 	body(),
 	anchor("center"),
 	tile(),
+   "player"
 ], 2, 2)
+
+player.health = 100;
+
+const playerHealthBar = add([
+	rect(50, 5),
+	pos(player.pos.x, player.pos.y - 10),
+	outline(2, color(0, 0, 0)),
+	color(0, 255, 0),
+	"playerHealthBar",
+]);
+
+playerHealthBar.onUpdate(() => {
+	playerHealthBar.width = (player.health / 100) * 50;
+	playerHealthBar.pos = vec2(player.pos.x - 10, player.pos.y - 20);
+});
+
+
 
 const hammer = player.add([
 	pos(-4, 9),
@@ -298,6 +317,22 @@ healthBar.onUpdate(() => {
 })
 
 
+function spawnBullet(from, to) {
+	const dir = to.sub(from).unit();
+	add([
+		pos(from),
+		sprite("bullet"),
+		move(dir, 60),
+		area(),
+		"bullet",
+	]);
+}
+
+loop(2, () => {
+	if (demon.exists() && player.exists()) {
+		spawnBullet(demon.pos.add(0, 4), player.pos);
+	}
+});
 
 function spin() {
 	let spinning = false
@@ -328,19 +363,7 @@ function interact() {
 		// The rest of the damage logic...
 	}
 }
-	for (const col of player.getCollisions()) {
-		const c = col.target;
-		if (c.is("chest")) {
-			if (c.opened) {
-				c.play("close");
-				c.opened = false;
-			} else {
-				c.play("open");
-				c.opened = true;
-			}
-			interacted = true;
-		}
-	}
+
 
 	if (!interacted) {
 		hammer.spin();
@@ -426,6 +449,27 @@ onGamepadButtonPress("south", interact)
 		}
 	})
 })
+
+onCollide("bullet", "player", (b, p) => {
+	destroy(b);
+	p.health -= 10;
+
+	p.color = rgb(255, 0, 0);
+	wait(0.1, () => p.color = rgb(255, 255, 255));
+
+	if (p.health <= 0) {
+		destroy(p);
+		destroy(playerHealthBar);
+		add([
+			text("Game Over", { size: 24 }),
+			pos(center()),
+			anchor("center"),
+			color(255, 0, 0),
+		]);
+	}
+});
+
+debug.inspect = true
 
 </script>
 
