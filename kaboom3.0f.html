@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <style>
+            /* CSS */
+
+        </style>
+
+        <title>Title</title>
+    </head>
+    <body>
+        <!-- HTML -->
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://unpkg.com/kaboom@3000.0.1/dist/kaboom.js"></script>
+
+        <!-- <script src="script.js"></script> -->
+        <script type="module">
+
+            // import kaboom.js
+            import kaboom from "https://unpkg.com/kaboom@3000.0.1/dist/kaboom.mjs";
+
+            // initialize kaboom context
+            kaboom();
+
+            kaboom({
+	scale: 4,
+	background: [0, 0, 0],
+})
+
+
+
+const DEMON_HEALTH = 100
+
+// https://0x72.itch.io/dungeontileset-ii
+loadSpriteAtlas("../img/0x72_DungeonTilesetII_v1.7.png", {
+	"hero": {
+		"x": 128,
+		"y": 68,
+		"width": 144,
+		"height": 28,
+		"sliceX": 9,
+		"anims": {
+			"idle": {
+				"from": 0,
+				"to": 3,
+				"speed": 3,
+				"loop": true,
+			},
+			"run": {
+				"from": 4,
+				"to": 7,
+				"speed": 10,
+				"loop": true,
+			},
+			"hit": 8,
+		},
+	},
+	"demon": {
+		"x": 16,
+		"y": 428,
+		"width": 256,
+		"height": 36,
+		"sliceX": 8,
+
+		"anims": {
+			"idle": {
+				"from": 0,
+				"to": 3,
+				"speed": 3,
+				"loop": true,
+			},
+			"run": {
+				"from": 4,
+				"to": 7,
+				"speed": 10,
+				"loop": true,
+			},
+		},
+	},
+	"floor": {
+		"x": 16,
+		"y": 64,
+		"width": 48,
+		"height": 48,
+		"sliceX": 3,
+		"sliceY": 3,
+	},
+
+	"hammer": {
+		"x": 307,
+		"y": 39,
+		"width": 12,
+		"height": 30,
+	},
+	"wall": {
+		"x": 16,
+		"y": 16,
+		"width": 16,
+		"height": 16,
+	},
+	"wall_top": {
+		"x": 16,
+		"y": 0,
+		"width": 16,
+		"height": 16,
+	},
+	"wall_left": {
+		"x": 32,
+		"y": 136,
+		"width": 16,
+		"height": 16,
+	},
+	"wall_right": {
+		"x": 20,
+		"y": 152,
+		"width": 16,
+		"height": 16,
+	},
+	"wall_topleft": {
+		"x": 32,
+		"y": 136,
+		"width": 16,
+		"height": 16,
+	},
+	"wall_topright": {
+		"x": 48,
+		"y": 136,
+		"width": 16,
+		"height": 16,
+	},
+	"wall_botleft": {
+		"x": 32,
+		"y": 144,
+		"width": 16,
+		"height": 16,
+	},
+	"wall_botright": {
+		"x": 48,
+		"y": 168,
+		"width": 16,
+		"height": 16,
+	},
+})
+
+// floor
+addLevel([
+	"xxxxxxxxxxxxxxxxxxxxxx",
+	"                      ",
+	"                      ",
+	"                      ",
+	"                      ",
+	"                      ",
+	"                      ",
+	"                      ",
+	"                      ",
+	"                      ",
+    "                      ",
+    "                      ",
+    "                      ",
+    "                      ",
+], {
+	tileWidth: 16,
+	tileHeight: 16,
+	tiles: {
+		" ": () => [
+			sprite("floor", { frame: ~~rand(0, 8) }),
+		],
+	},
+})
+
+// objects
+const map = addLevel([
+	"tttttttttttttttttttttt",
+	"cwwwwwwwwwwwwwwwwwwwwd",
+	"l                    r",
+    "l                    r",
+    "l                    r",
+    "l                    r",
+	"l                    r",
+    "l                    r",
+    "l                    r",
+    "l                    r",
+    "l                    r",
+    "l                    r",
+	"attttttttttttttttttttb",
+	"wwwwwwwwwwwwwwwwwwwwww",
+], {
+	tileWidth: 16,
+	tileHeight: 16,
+	tiles: {
+
+		"a": () => [
+			sprite("wall_botleft"),
+			area({ shape: new Rect(vec2(0), 4, 16) }),
+			body({ isStatic: true }),
+			tile({ isObstacle: true }),
+		],
+		"b": () => [
+			sprite("wall_botright"),
+			area({ shape: new Rect(vec2(12, 0), 4, 16) }),
+			body({ isStatic: true }),
+			tile({ isObstacle: true }),
+		],
+		"c": () => [
+			sprite("wall_topleft"),
+			area(),
+			body({ isStatic: true }),
+			tile({ isObstacle: true }),
+		],
+		"d": () => [
+			sprite("wall_topright"),
+			area(),
+			body({ isStatic: true }),
+			tile({ isObstacle: true }),
+		],
+		"w": () => [
+			sprite("wall"),
+			area(),
+			body({ isStatic: true }),
+			tile({ isObstacle: true }),
+		],
+		"t": () => [
+			sprite("wall_top"),
+			area({ shape: new Rect(vec2(0, 12), 16, 4) }),
+			body({ isStatic: true }),
+			tile({ isObstacle: true }),
+		],
+		"l": () => [
+			sprite("wall_left"),
+			area({ shape: new Rect(vec2(0), 4, 16) }),
+			body({ isStatic: true }),
+			tile({ isObstacle: true }),
+		],
+		"r": () => [
+			sprite("wall_right"),
+			area({ shape: new Rect(vec2(12, 0), 4, 16) }),
+			body({ isStatic: true }),
+			tile({ isObstacle: true }),
+		],
+	},
+})
+
+const player = map.spawn([
+	sprite("hero", { anim: "idle" }),
+	area({ shape: new Rect(vec2(0, 6), 12, 12) }),
+	body(),
+	anchor("center"),
+	tile(),
+], 2, 2)
+
+const hammer = player.add([
+	pos(-4, 9),
+	sprite("hammer"),
+	anchor("bot"),
+	rotate(0),
+	area(),
+	spin(),
+
+])
+
+
+const demon = map.spawn([
+    sprite("demon", { anim: "idle" }),
+	area({ shape: new Rect(vec2(0), 20, 40) }),
+	body({ isStatic: true }),
+	tile({ isObstacle: true }),
+], 5, 4)
+
+demon.onUpdate(() => {
+	const direction = player.pos.sub(demon.pos).unit()
+	demon.move(direction.scale(30))
+})
+
+
+demon.health = DEMON_HEALTH
+
+const healthBar = add([
+	rect(50, 5),
+	pos(demon.pos.x, demon.pos.y - 20),
+	outline(2, color(0, 0, 0)),
+	color(255, 0, 0),
+	"healthBar",
+])
+
+
+healthBar.onUpdate(() => {
+
+	healthBar.width = (demon.health / DEMON_HEALTH) * 50
+	healthBar.pos = vec2(demon.pos.x - 10, demon.pos.y - 10)
+})
+
+
+
+function spin() {
+	let spinning = false
+	return {
+		id: "spin",
+		update() {
+			if (spinning) {
+				this.angle += 1200 * dt()
+				if (this.angle >= 360) {
+					this.angle = 0
+					spinning = false
+				}
+			}
+		},
+		spin() {
+			spinning = true
+		},
+	}
+}
+
+function interact() {
+	let interacted = false;
+
+	if (hammer.area && demon.area) {
+	console.log("Checking overlap...");
+	if ((hammer.isOverlapping(demon))) {
+		console.log("Hammer hit demon!");
+		// The rest of the damage logic...
+	}
+}
+	for (const col of player.getCollisions()) {
+		const c = col.target;
+		if (c.is("chest")) {
+			if (c.opened) {
+				c.play("close");
+				c.opened = false;
+			} else {
+				c.play("open");
+				c.opened = true;
+			}
+			interacted = true;
+		}
+	}
+
+	if (!interacted) {
+		hammer.spin();
+
+		// Manual bounding box collision check
+		if (hammer.area && demon.area && (hammer.isOverlapping(demon))) {
+			if (!demon.hurt) {
+				demon.health -= 10;
+
+				// Flash red for feedback
+				demon.color = rgb(255, 0, 0);
+				wait(0.1, () => demon.color = rgb(255, 255, 255));
+
+				// Optional: prevent spam by setting a short cooldown
+
+				if (demon.health <= 0) {
+					destroy(demon);
+					destroy(healthBar);
+				}
+			}
+		}
+	}
+}
+onKeyPress("space", interact)
+
+const SPEED = 120
+
+const dirs = {
+	"left": LEFT,
+	"right": RIGHT,
+	"up": UP,
+	"down": DOWN,
+}
+
+player.onUpdate(() => {
+	camPos(player.pos)
+})
+
+player.onPhysicsResolve(() => {
+	camPos(player.pos)
+})
+
+onKeyDown("right", () => {
+	player.flipX = false
+	hammer.flipX = false
+	player.move(SPEED, 0)
+	hammer.pos = vec2(-4, 9)
+})
+
+onKeyDown("left", () => {
+	player.flipX = true
+	hammer.flipX = true
+	player.move(-SPEED, 0)
+	hammer.pos = vec2(4, 9)
+})
+
+onKeyDown("up", () => {
+	player.move(0, -SPEED)
+})
+
+onKeyDown("down", () => {
+	player.move(0, SPEED)
+})
+
+onGamepadButtonPress("south", interact)
+
+
+
+
+
+;["left", "right", "up", "down"].forEach((key) => {
+	onKeyPress(key, () => {
+		player.play("run")
+	})
+	onKeyRelease(key, () => {
+		if (
+			!isKeyDown("left")
+			&& !isKeyDown("right")
+			&& !isKeyDown("up")
+			&& !isKeyDown("down")
+		) {
+			player.play("idle")
+		}
+	})
+})
+
+</script>
+
