@@ -1,16 +1,19 @@
 # Presentation Plan
 
 ## Hook
-* 
+* I will show people different bosses in different game
+* what they have in commmand and how I came up with my
 
 ## Product
-* 
+* I will show what I made with a demo of me playing my game
 
 ## Process
-* 
+* I will show how I learn the tool by using Kaboom playground
+* I will seperate my project to different part and example different part one at a time 
 
 ## Conclusion
-* 
+* by showing the different of my mvp and beyond mvp
+* a url and a thank you 
 
 <!-- EXAMPLE
 
