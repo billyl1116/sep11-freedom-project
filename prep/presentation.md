@@ -2,14 +2,15 @@
 
 ## Hook
 * I will show people different bosses in different game
-* what they have in commmand and how I came up with my
+* what they have in common and how I came up with my boss 
 
 ## Product
 * I will show what I made with a demo of me playing my game
 
 ## Process
 * I will show how I learn the tool by using Kaboom playground
-* I will seperate my project to different part and example different part one at a time 
+* I will seperate my project to different part and example different part one at a time
+* code snipped of the sprite, interaction, events
 
 ## Conclusion
 * by showing the different of my mvp and beyond mvp
