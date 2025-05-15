@@ -14,7 +14,7 @@ In this entry I follow my plan to create the beginning of my project working tow
 
 
 [This](../kaboomfinal.html) is my project. I made a working tower with a health bar, and a working sprite player can control and shoot bullets.
-![alt text](image.png)
+![alt text](image1.png)
 
 
 
