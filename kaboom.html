@@ -30,68 +30,515 @@
             // initialize kaboom context
             kaboom();
 
-            setGravity(2400)
-            loadSprite("player", "img/apple.png");
-
-            let SPEED = 800;
-     const player = add([
-    sprite("player"),
-    pos(100, 100),
-    area(),
-    body(),
-    ]);
-
-
-    onKeyPress("space", () => {
-    player.jump()
+            kaboom({
+	scale: 4,
+	background: [0, 0, 0],
 })
 
-add([
-    rect(width(), 48), // renders a rectangle. It accepts 2 arguments, the width and height, which we give it the game width (returned by width()) and height of 48 pixels
-    pos(0, height() - 48), // pos() position. We give it a x: 0 and y: height() - 48 so it sits right on the bottom of the screen
-    outline(4), // renders an outline of 4 pixels
-    area(), //  adds a collider to it
-    body({ isStatic: true }), // the object won't move, and all non static objects won't move past it
-    color(127, 200, 255),
+
+
+const DEMON_HEALTH = 300
+
+// https://0x72.itch.io/dungeontileset-ii
+loadSound("bgm", "audio/background.mp3");
+loadSound("attack", "audio/attack.mp3");
+loadSprite("bullet", "img/steelball.png")
+loadSpriteAtlas("img/0x72_DungeonTilesetII_v1.7.png", {
+	"hero": {
+		"x": 128,
+		"y": 68,
+		"width": 144,
+		"height": 28,
+		"sliceX": 9,
+		"anims": {
+			"idle": {
+				"from": 0,
+				"to": 3,
+				"speed": 3,
+				"loop": true,
+			},
+			"run": {
+				"from": 4,
+				"to": 7,
+				"speed": 10,
+				"loop": true,
+			},
+			"hit": 8,
+		},
+	},
+	"demon": {
+		"x": 16,
+		"y": 428,
+		"width": 256,
+		"height": 36,
+		"sliceX": 8,
+
+		"anims": {
+			"idle": {
+				"from": 0,
+				"to": 3,
+				"speed": 3,
+				"loop": true,
+			},
+			"run": {
+				"from": 4,
+				"to": 7,
+				"speed": 10,
+				"loop": true,
+			},
+		},
+	},
+	"floor": {
+		"x": 16,
+		"y": 64,
+		"width": 48,
+		"height": 48,
+		"sliceX": 3,
+		"sliceY": 3,
+	},
+
+	"hammer": {
+		"x": 307,
+		"y": 39,
+		"width": 12,
+		"height": 30,
+	},
+	"wall": {
+		"x": 16,
+		"y": 16,
+		"width": 16,
+		"height": 16,
+	},
+	"wall_top": {
+		"x": 16,
+		"y": 0,
+		"width": 16,
+		"height": 16,
+	},
+	"wall_left": {
+		"x": 32,
+		"y": 136,
+		"width": 16,
+		"height": 16,
+	},
+	"wall_right": {
+		"x": 20,
+		"y": 152,
+		"width": 16,
+		"height": 16,
+	},
+	"wall_topleft": {
+		"x": 32,
+		"y": 136,
+		"width": 16,
+		"height": 16,
+	},
+	"wall_topright": {
+		"x": 48,
+		"y": 136,
+		"width": 16,
+		"height": 16,
+	},
+	"wall_botleft": {
+		"x": 32,
+		"y": 144,
+		"width": 16,
+		"height": 16,
+	},
+	"wall_botright": {
+		"x": 48,
+		"y": 168,
+		"width": 16,
+		"height": 16,
+	},
+})
+
+
+
+ const bgm = play("bgm", {
+                volume: 0.5,
+                loop: true
+            });
+
+
+// floor
+addLevel([
+	"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+    "                                                                                                       ",
+    "                                                                                                       ",
+    "                                                                                                       ",
+    "                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+], {
+	tileWidth: 16,
+	tileHeight: 16,
+	tiles: {
+		" ": () => [
+			sprite("floor", { frame: ~~rand(0, 8) }),
+		],
+	},
+})
+
+// objects
+const map = addLevel([
+	"ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+	"cwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwd",
+	"l                                                                                                     r",
+    "l                                                                                                     r",
+    "l                                                                                                     r",
+    "l                                                                                                     r",
+	"l                                                                                                     r",
+    "l                                                                                                     r",
+    "l                                                                                                     r",
+    "l                                                                                                     r",
+    "l                                                                                                     r",
+    "l                                                                                                     r",
+	"l                                                                                                     r",
+	"l                                                                                                     r",
+	"l                                                                                                     r",
+	"l                                                                                                     r",
+	"l                                                                                                     r",
+	"l                                                                                                     r",
+	"l                                                                                                     r",
+	"l                                                                                                     r",
+	"l                                                                                                     r",
+	"atttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttb",
+	"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+], {
+	tileWidth: 16,
+	tileHeight: 16,
+	tiles: {
+
+		"a": () => [
+			sprite("wall_botleft"),
+			area({ shape: new Rect(vec2(0), 4, 16) }),
+			body({ isStatic: true }),
+			tile({ isObstacle: true }),
+		],
+		"b": () => [
+			sprite("wall_botright"),
+			area({ shape: new Rect(vec2(12, 0), 4, 16) }),
+			body({ isStatic: true }),
+			tile({ isObstacle: true }),
+		],
+		"c": () => [
+			sprite("wall_topleft"),
+			area(),
+			body({ isStatic: true }),
+			tile({ isObstacle: true }),
+		],
+		"d": () => [
+			sprite("wall_topright"),
+			area(),
+			body({ isStatic: true }),
+			tile({ isObstacle: true }),
+		],
+		"w": () => [
+			sprite("wall"),
+			area(),
+			body({ isStatic: true }),
+			tile({ isObstacle: true }),
+
+		],
+		"t": () => [
+			sprite("wall_top"),
+			area({ shape: new Rect(vec2(0, 12), 16, 4) }),
+			body({ isStatic: true }),
+			tile({ isObstacle: true }),
+		],
+		"l": () => [
+			sprite("wall_left"),
+			area({ shape: new Rect(vec2(0), 4, 16) }),
+			body({ isStatic: true }),
+			tile({ isObstacle: true }),
+		],
+		"r": () => [
+			sprite("wall_right"),
+			area({ shape: new Rect(vec2(12, 0), 4, 16) }),
+			body({ isStatic: true }),
+			tile({ isObstacle: true }),
+		],
+	},
+})
+
+const player = map.spawn([
+	sprite("hero", { anim: "idle" }),
+	area({ shape: new Rect(vec2(0, 6), 12, 12) }),
+	body(),
+	anchor("center"),
+	tile(),
+   "player"
+], 2, 2)
+
+player.health = 150;
+
+const playerHealthBar = add([
+	rect(50, 5),
+	pos(player.pos.x, player.pos.y - 10),
+	outline(2, color(0, 0, 0)),
+	color(0, 255, 0),
+	"playerHealthBar",
+]);
+
+playerHealthBar.onUpdate(() => {
+	playerHealthBar.width = (player.health / 100) * 50;
+	playerHealthBar.pos = vec2(player.pos.x - 10, player.pos.y - 20);
+});
+
+
+
+const hammer = player.add([
+	pos(-4, 9),
+	sprite("hammer"),
+	anchor("bot"),
+	rotate(0),
+	area(),
+	spin(),
+
 ])
 
-onKeyDown("right", () => {
-	player.move(SPEED, 0)
+
+
+const demon = map.spawn([
+    sprite("demon", { anim: "idle" }),
+	area({ shape: new Rect(vec2(0), 20, 40) }),
+	body({ isStatic: true }),
+	tile({ isObstacle: true }),
+	"demon"
+], 5, 4)
+
+demon.onUpdate(() => {
+	const direction = player.pos.sub(demon.pos).unit()
+	demon.move(direction.scale(30))
 })
+
+
+demon.health = DEMON_HEALTH
+
+const healthBar = add([
+	rect(50, 5),
+	pos(demon.pos.x, demon.pos.y - 20),
+	outline(2, color(0, 0, 0)),
+	color(255, 0, 0),
+	"healthBar",
+])
+
+
+healthBar.onUpdate(() => {
+
+	healthBar.width = (demon.health / DEMON_HEALTH) * 50
+	healthBar.pos = vec2(demon.pos.x - 10, demon.pos.y - 10)
+})
+
+
+function spawnBullet(from, to) {
+	const dir = to.sub(from).unit();
+	add([
+		pos(from),
+		sprite("bullet"),
+		move(dir, 60),
+		area(),
+		"bullet",
+	]);
+}
+
+loop(2, () => {
+	if (demon.exists() && player.exists()) {
+		spawnBullet(demon.pos.add(0, 4), player.pos);
+	}
+});
+
+function spin() {
+	let spinning = false
+	return {
+		id: "spin",
+		update() {
+			if (spinning) {
+				this.angle += 1200 * dt()
+				if (this.angle >= 360) {
+					this.angle = 0
+					spinning = false
+				}
+			}
+		},
+		spin() {
+			spinning = true
+		},
+	}
+}
+
+function interact() {
+	let interacted = false;
+
+
+
+
+	if (!interacted) {
+		hammer.spin();
+
+		// Manual bounding box collision check
+		if (hammer.area && demon.area && (hammer.isOverlapping(demon))) {
+		     play("attack");
+			if (!demon.hurt) {
+				demon.health -= 10;
+
+				// Flash red for feedback
+				demon.color = rgb(255, 0, 0);
+				wait(0.1, () => demon.color = rgb(255, 255, 255));
+
+
+				if (demon.health <= 0) {
+					destroy(demon);
+					destroy(healthBar);
+				}
+			}
+		}
+	}
+}
+onKeyPress("space", interact)
+
+const SPEED = 120
+
+const dirs = {
+	"left": LEFT,
+	"right": RIGHT,
+	"up": UP,
+	"down": DOWN,
+}
+
+player.onUpdate(() => {
+	camPos(player.pos)
+})
+
+player.onPhysicsResolve(() => {
+	camPos(player.pos)
+})
+
+onKeyDown("right", () => {
+	player.flipX = false
+	hammer.flipX = false
+	player.move(SPEED, 0)
+	hammer.pos = vec2(-4, 9)
+})
+
 onKeyDown("left", () => {
+	player.flipX = true
+	hammer.flipX = true
 	player.move(-SPEED, 0)
+	hammer.pos = vec2(4, 9)
 })
 
 onKeyDown("up", () => {
-    player.move(0, -SPEED)
+	player.move(0, -SPEED)
 })
 
 onKeyDown("down", () => {
-    player.move(0, SPEED)
+	player.move(0, SPEED)
 })
 
 
-loadSprite("enemy", "img/enemy.png");
 
 
+;["left", "right", "up", "down"].forEach((key) => {
+	onKeyPress(key, () => {
+		player.play("run")
+	})
+	onKeyRelease(key, () => {
+		if (
+			!isKeyDown("left")
+			&& !isKeyDown("right")
+			&& !isKeyDown("up")
+			&& !isKeyDown("down")
+		) {
+			player.play("idle")
+		}
+	})
+})
 
+onCollide("bullet", "player", (b, p) => {
+	destroy(b);
+	p.health -= 10;
 
+	p.color = rgb(255, 0, 0);
+	wait(0.1, () => p.color = rgb(255, 255, 255));
 
-
-
-const enemy = add([
-    sprite("enemy"),
-    pos(200, 100),
-    area(),
-    body(),
-    body({ isStatic: true }),
-    "enemy"
-]);
-
-player.onCollide("enemy", () => {
-    console.log("Ouch!");
-    addKaboom(player.pos);
+	if (p.health <= 0) {
+		destroy(p);
+		destroy(playerHealthBar);
+		add([
+			text("Game Over", { size: 24 }),
+			pos(center()),
+			anchor("center"),
+			color(255, 0, 0),
+		]);
+	}
 });
+
+ function shootRotatingLaser(demon) {
+                const laser = add([
+                    pos(demon.pos),
+                    rect(150, 4),
+                    anchor("left"),
+                    color(255, 0, 0),
+                    rotate(0),
+                    area(),
+                    "laser"
+                ]);
+
+                let angle = 0;
+                const rotationSpeed = 100;
+                const duration = 4;
+
+               wait(duration, () => {
+        destroy(laser);
+    });
+
+
+                laser.onUpdate(() => {
+                    angle += rotationSpeed * dt();
+                    laser.angle = angle;
+
+                    if (player.exists() && laser.area && player.area) {
+                        if (laser.isOverlapping(player)) {
+                            player.color = rgb(255, 0, 0);
+                            wait(0.1, () => player.color = rgb(255, 255, 255));
+                            player.health -= 5;
+
+                            if (player.health <= 0) {
+                                destroy(player);
+                                add([
+                                    text("Game Over", { size: 24 }),
+                                    pos(center()),
+                                    anchor("center"),
+                                    color(255, 0, 0)
+                                ]);
+                            }
+                        }
+                    }
+                });
+            }
+
+            loop(4, () => {
+                if (demon.exists()) {
+                    shootRotatingLaser(demon);
+                }
+            });
 
 </script>
 
