@@ -40,10 +40,10 @@
 const DEMON_HEALTH = 100
 
 // https://0x72.itch.io/dungeontileset-ii
-
+loadSound("bgm", "audio/background.mp3");
+loadSound("attack", "audio/attack.mp3");
 loadSprite("bullet", "img/steelball.png")
 loadSpriteAtlas("img/0x72_DungeonTilesetII_v1.7.png", {
-
 	"hero": {
 		"x": 128,
 		"y": 68,
@@ -153,22 +153,38 @@ loadSpriteAtlas("img/0x72_DungeonTilesetII_v1.7.png", {
 	},
 })
 
+
+
+ const bgm = play("bgm", {
+                volume: 0.5,
+                loop: true
+            });
+
+
 // floor
 addLevel([
-	"xxxxxxxxxxxxxxxxxxxxxx",
-	"                      ",
-	"                      ",
-	"                      ",
-	"                      ",
-	"                      ",
-	"                      ",
-	"                      ",
-	"                      ",
-	"                      ",
-    "                      ",
-    "                      ",
-    "                      ",
-    "                      ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+    "                                                                                                       ",
+    "                                                                                                       ",
+    "                                                                                                       ",
+    "                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
+	"                                                                                                       ",
 ], {
 	tileWidth: 16,
 	tileHeight: 16,
@@ -181,20 +197,29 @@ addLevel([
 
 // objects
 const map = addLevel([
-	"tttttttttttttttttttttt",
-	"cwwwwwwwwwwwwwwwwwwwwd",
-	"l                    r",
-    "l                    r",
-    "l                    r",
-    "l                    r",
-	"l                    r",
-    "l                    r",
-    "l                    r",
-    "l                    r",
-    "l                    r",
-    "l                    r",
-	"attttttttttttttttttttb",
-	"wwwwwwwwwwwwwwwwwwwwww",
+	"ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
+	"cwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwd",
+	"l                                                                                                     r",
+    "l                                                                                                     r",
+    "l                                                                                                     r",
+    "l                                                                                                     r",
+	"l                                                                                                     r",
+    "l                                                                                                     r",
+    "l                                                                                                     r",
+    "l                                                                                                     r",
+    "l                                                                                                     r",
+    "l                                                                                                     r",
+	"l                                                                                                     r",
+	"l                                                                                                     r",
+	"l                                                                                                     r",
+	"l                                                                                                     r",
+	"l                                                                                                     r",
+	"l                                                                                                     r",
+	"l                                                                                                     r",
+	"l                                                                                                     r",
+	"l                                                                                                     r",
+	"atttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttb",
+	"wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
 ], {
 	tileWidth: 16,
 	tileHeight: 16,
@@ -229,6 +254,7 @@ const map = addLevel([
 			area(),
 			body({ isStatic: true }),
 			tile({ isObstacle: true }),
+
 		],
 		"t": () => [
 			sprite("wall_top"),
@@ -288,11 +314,13 @@ const hammer = player.add([
 ])
 
 
+
 const demon = map.spawn([
     sprite("demon", { anim: "idle" }),
 	area({ shape: new Rect(vec2(0), 20, 40) }),
 	body({ isStatic: true }),
 	tile({ isObstacle: true }),
+	"demon"
 ], 5, 4)
 
 demon.onUpdate(() => {
@@ -358,13 +386,7 @@ function spin() {
 function interact() {
 	let interacted = false;
 
-	if (hammer.area && demon.area) {
-	console.log("Checking overlap...");
-	if ((hammer.isOverlapping(demon))) {
-		console.log("Hammer hit demon!");
-		// The rest of the damage logic...
-	}
-}
+
 
 
 	if (!interacted) {
@@ -372,6 +394,7 @@ function interact() {
 
 		// Manual bounding box collision check
 		if (hammer.area && demon.area && (hammer.isOverlapping(demon))) {
+		     play("attack");
 			if (!demon.hurt) {
 				demon.health -= 10;
 
@@ -379,7 +402,6 @@ function interact() {
 				demon.color = rgb(255, 0, 0);
 				wait(0.1, () => demon.color = rgb(255, 255, 255));
 
-				// Optional: prevent spam by setting a short cooldown
 
 				if (demon.health <= 0) {
 					destroy(demon);
@@ -430,9 +452,6 @@ onKeyDown("down", () => {
 	player.move(0, SPEED)
 })
 
-onGamepadButtonPress("south", interact)
-
-
 
 
 
@@ -471,7 +490,55 @@ onCollide("bullet", "player", (b, p) => {
 	}
 });
 
+ function shootRotatingLaser(demon) {
+                const laser = add([
+                    pos(demon.pos),
+                    rect(150, 4),
+                    anchor("left"),
+                    color(255, 0, 0),
+                    rotate(0),
+                    area(),
+                    "laser"
+                ]);
 
+                let angle = 0;
+                const rotationSpeed = 100;
+                const duration = 4;
+
+               wait(duration, () => {
+        destroy(laser);
+    });
+
+
+                laser.onUpdate(() => {
+                    angle += rotationSpeed * dt();
+                    laser.angle = angle;
+
+                    if (player.exists() && laser.area && player.area) {
+                        if (laser.isOverlapping(player)) {
+                            player.color = rgb(255, 0, 0);
+                            wait(0.1, () => player.color = rgb(255, 255, 255));
+                            player.health -= 5;
+
+                            if (player.health <= 0) {
+                                destroy(player);
+                                add([
+                                    text("Game Over", { size: 24 }),
+                                    pos(center()),
+                                    anchor("center"),
+                                    color(255, 0, 0)
+                                ]);
+                            }
+                        }
+                    }
+                });
+            }
+
+            loop(4, () => {
+                if (demon.exists()) {
+                    shootRotatingLaser(demon);
+                }
+            });
 
 </script>
 
