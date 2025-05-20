@@ -30,6 +30,22 @@
             // initialize kaboom context
             kaboom();
 
+scene("menu", () => {
+
+    const startText = add([
+        text("Press ENTER to Start", { size: 64 }),
+        pos(center().x, center().y + 20),
+        anchor("center"),
+        color(0),
+    ]);
+
+    onKeyPress("enter", () => {
+        go("game");
+    });
+});
+
+scene("game", () => {
+
             kaboom({
 	scale: 4,
 	background: [0, 0, 0],
@@ -88,6 +104,22 @@ loadSpriteAtlas("img/0x72_DungeonTilesetII_v1.7.png", {
 			},
 		},
 	},
+
+	"bow": {
+  "x": 289 ,
+  "y": 195 ,
+  "width": 14 ,
+  "height": 26,
+},
+
+"arrow": {
+  "x": 324 ,
+  "y": 202 ,
+  "width": 7 ,
+  "height": 21,
+
+},
+
 	"floor": {
 		"x": 16,
 		"y": 64,
@@ -103,18 +135,22 @@ loadSpriteAtlas("img/0x72_DungeonTilesetII_v1.7.png", {
 		"width": 12,
 		"height": 30,
 	},
+
+
 	"wall": {
-		"x": 16,
-		"y": 16,
-		"width": 16,
-		"height": 16,
+		"x": 16  ,
+		"y": 16  ,
+		"width": 16  ,
+		"height": 16 ,
 	},
+
 	"wall_top": {
 		"x": 16,
 		"y": 0,
 		"width": 16,
 		"height": 16,
 	},
+
 	"wall_left": {
 		"x": 32,
 		"y": 136,
@@ -151,6 +187,8 @@ loadSpriteAtlas("img/0x72_DungeonTilesetII_v1.7.png", {
 		"width": 16,
 		"height": 16,
 	},
+
+
 })
 
 
@@ -225,6 +263,13 @@ const map = addLevel([
 	tileHeight: 16,
 	tiles: {
 
+"w": () => [
+			sprite("wall"),
+			area(),
+			body({ isStatic: true }),
+			tile({ isObstacle: true }),
+
+		],
 		"a": () => [
 			sprite("wall_botleft"),
 			area({ shape: new Rect(vec2(0), 4, 16) }),
@@ -249,13 +294,7 @@ const map = addLevel([
 			body({ isStatic: true }),
 			tile({ isObstacle: true }),
 		],
-		"w": () => [
-			sprite("wall"),
-			area(),
-			body({ isStatic: true }),
-			tile({ isObstacle: true }),
 
-		],
 		"t": () => [
 			sprite("wall_top"),
 			area({ shape: new Rect(vec2(0, 12), 16, 4) }),
@@ -284,7 +323,7 @@ const player = map.spawn([
 	anchor("center"),
 	tile(),
    "player"
-], 2, 2)
+], 20, 10)
 
 player.health = 100;
 
@@ -312,6 +351,70 @@ const hammer = player.add([
 	spin(),
 
 ])
+let currentWeapon = "hammer";
+
+onKeyPress("e", () => {
+	currentWeapon = currentWeapon === "hammer" ? "bow" : "hammer";
+
+	// Update visuals
+	if (currentWeapon === "hammer") {
+		hammer.hidden = false;
+		bow.hidden = true;
+	} else {
+		hammer.hidden = true;
+		bow.hidden = false;
+	}
+});
+
+const bow = player.add([
+	pos(-4, 9),
+	sprite("bow"),
+	anchor("bot"),
+	rotate(0),
+	area(),
+	"bow",
+]);
+
+bow.hidden = true;
+
+
+
+onClick(() => {
+  const mouse = toWorld(mousePos());
+
+    const dir = mouse.sub(player.pos).unit();
+
+  if (currentWeapon === "bow") {
+    const arrow = add([
+        sprite("arrow"),
+        pos(player.pos.add(dir.scale(12))),
+		anchor("center"),
+        area(),
+        move(dir, 300),
+        "arrow",
+    ]);
+
+
+
+   arrow.angle = dir.angle() + 90;
+  }
+});
+
+onCollide("arrow", "demon", (arrow, demon) => {
+	destroy(arrow);
+
+	if (demon.exists()) {
+		demon.health -= 1;
+
+		demon.color = rgb(255, 0, 0);
+		wait(0.1, () => demon.color = rgb(255, 255, 255));
+
+		if (demon.health <= 0) {
+			destroy(demon);
+			destroy(healthBar);
+		}
+	}
+});
 
 
 
@@ -321,7 +424,7 @@ const demon = map.spawn([
 	body({ isStatic: true }),
 	tile({ isObstacle: true }),
 	"demon"
-], 5, 4)
+], 40, 20)
 
 demon.onUpdate(() => {
 	const direction = player.pos.sub(demon.pos).unit()
@@ -384,9 +487,8 @@ function spin() {
 }
 
 function interact() {
-	let interacted = false;
 
-
+let interacted = false;
 
 
 	if (!interacted) {
@@ -455,7 +557,7 @@ onKeyDown("down", () => {
 
 
 
-;["left", "rigealt", "up", "down"].forEach((key) => {
+;["left", "right", "up", "down"].forEach((key) => {
 	onKeyPress(key, () => {
 		player.play("run")
 	})
@@ -479,12 +581,13 @@ onCollide("bullet", "player", (b, p) => {
 	wait(0.1, () => p.color = rgb(255, 255, 255));
 
 	if (p.health <= 0) {
+
 		destroy(p);
 		destroy(playerHealthBar);
 		add([
 			text("Game Over", { size: 24 }),
-			pos(center()),
-			anchor("center"),
+ 			pos(player.pos),
+ 			anchor("center"),
 			color(255, 0, 0),
 		]);
 	}
@@ -524,7 +627,7 @@ onCollide("bullet", "player", (b, p) => {
                                 destroy(player);
                                 add([
                                     text("Game Over", { size: 24 }),
-                                    pos(center()),
+                                    pos(player.pos),
                                     anchor("center"),
                                     color(255, 0, 0)
                                 ]);
@@ -539,6 +642,11 @@ onCollide("bullet", "player", (b, p) => {
                     shootRotatingLaser(demon);
                 }
             });
+});
+
+
+go("menu");
 
 </script>
+
 
