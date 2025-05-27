@@ -41,6 +41,7 @@ scene("menu", () => {
 
     onKeyPress("enter", () => {
         go("game");
+		alert("arrow key to move press space to attack with hammer press E to swich weapon, mouse click to shoot arrow when using the bow")
     });
 });
 
@@ -643,6 +644,8 @@ onCollide("bullet", "player", (b, p) => {
                 }
             });
 });
+
+  debug: true,
 
 
 go("menu");
